@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class Start
  */
-@WebServlet("/Start")
+@WebServlet(urlPatterns={"/Start","/Startup"})
 public class Start extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -32,8 +32,14 @@ public class Start extends HttpServlet {
 		//response.getWriter().append("Served at 4413 at this location: ").append(request.getContextPath());
 		response.setContentType("text/plain");
 		Writer resOut = response.getWriter();
+		resOut.write("Hello World!\n");
 		String clientIP = request.getRemoteAddr();
-	 
+		resOut.write("Client IP:"+ clientIP+"\n");
+		String foo = request.getParameter("foo");
+		resOut.write("Query Param foo="+ foo + "\n");
+		String url = this.getServletContext().getContextPath()+"/Start";
+		resOut.write(url);
+		//	response.sendRedirect(url);
 	}
 
 	/**
