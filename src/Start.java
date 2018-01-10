@@ -38,8 +38,9 @@ public class Start extends HttpServlet {
 		String foo = request.getParameter("foo");
 		resOut.write("Query Param foo="+ foo + "\n");
 		String url = this.getServletContext().getContextPath()+"/Start";
-		resOut.write(url);
-		//	response.sendRedirect(url);
+		String action = request.getMethod();
+		resOut.write(action+"\n");
+		//response.sendRedirect(url);
 	}
 
 	/**
