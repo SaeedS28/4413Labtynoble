@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class Start
  */
-@WebServlet(urlPatterns={"/Start","/Startup"})
+@WebServlet(urlPatterns={"/Start","/Startup","/Startup/*"})
 public class Start extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -37,10 +37,13 @@ public class Start extends HttpServlet {
 		resOut.write("Client IP:"+ clientIP+"\n");
 		String foo = request.getParameter("foo");
 		resOut.write("Query Param foo="+ foo + "\n");
+	
 		String url = this.getServletContext().getContextPath()+"/Start";
 		String action = request.getMethod();
 		resOut.write(action+"\n");
-		//response.sendRedirect(url);
+		Double principal=Double.parseDouble(this.getServletContext().getInitParameter("principal"));
+		if(request.getRequestURI().contains("YorkBank"))
+		response.sendRedirect(url);
 	}
 
 	/**
