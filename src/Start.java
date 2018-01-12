@@ -33,15 +33,47 @@ public class Start extends HttpServlet {
 		response.setContentType("text/plain");
 		Writer resOut = response.getWriter();
 		resOut.write("Hello World!\n");
+	
 		String clientIP = request.getRemoteAddr();
 		resOut.write("Client IP:"+ clientIP+"\n");
+		
+		int clientPort = request.getRemotePort();
+		resOut.write("Client Port: "+clientPort+"\n");
+		
+		
+		boolean flagged = true;
+		if(flagged)
+			resOut.write("This IP has been flagged! \n");
+		else
+			resOut.write("This Ip has not been flagged! \n");
+		
+		
+		String clientProtocol = request.getProtocol();
+		resOut.write("Client Protocal: "+clientProtocol+"\n");
+		
+		String action = request.getMethod();
+		resOut.write("Client Method "+action+". \n");
+		
+		String queryString = request.getQueryString();
+		resOut.write("Query String: "+queryString+"\n");
+		
 		String foo = request.getParameter("foo");
-		resOut.write("Query Param foo="+ foo + "\n");
+		resOut.write("Query Param foo= "+ foo + "\n");
 	
 		String url = this.getServletContext().getContextPath()+"/Start";
-		String action = request.getMethod();
-		resOut.write(action+"\n");
-		Double principal=Double.parseDouble(this.getServletContext().getInitParameter("principal"));
+		resOut.write("Request URI: "+url+" \n");
+		
+		String servletPath = request.getServletPath();
+		resOut.write("Request Servlet Path :"+servletPath+"\n");
+
+		Double principal = 0.0;
+		Double period = 0.0;
+		Double interest = 0.0;
+		Double mpayments = (interest/12)*principal/(Math.pow(period,1-(1+(interest/12))));
+		resOut.write("---- Monthly Payments ----\n");
+		resOut.write("Based on Principal="+principal+" Period="+period+" Interest="+interest+"\n");
+		resOut.write("Monthly Payments: "+mpayments);
+		//Double principal=Double.parseDouble(this.getServletContext().getInitParameter("principal"));
 		if(request.getRequestURI().contains("YorkBank"))
 		response.sendRedirect(url);
 	}
