@@ -2,6 +2,7 @@
 
 import java.io.IOException;
 import java.io.Writer;
+import java.text.DecimalFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,7 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(urlPatterns={"/Start","/Startup","/Startup/*"})
 public class Start extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private Boolean flag1 = true ,flag2 = true;
+	private Double principalOld=null;
+	private Double periodOld=null;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -30,6 +33,8 @@ public class Start extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at 4413 at this location: ").append(request.getContextPath());
+		
+//Output and parsing	
 		response.setContentType("text/plain");
 		Writer resOut = response.getWriter();
 		resOut.write("Hello World!\n");
@@ -57,25 +62,80 @@ public class Start extends HttpServlet {
 		String queryString = request.getQueryString();
 		resOut.write("Query String: "+queryString+"\n");
 		
-		String foo = request.getParameter("foo");
-		resOut.write("Query Param foo= "+ foo + "\n");
+		//String foo = request.getParameter("foo");
+		//resOut.write("Query Param foo= "+ foo + "\n");
 	
 		String url = this.getServletContext().getContextPath()+"/Start";
 		resOut.write("Request URI: "+url+" \n");
 		
 		String servletPath = request.getServletPath();
 		resOut.write("Request Servlet Path :"+servletPath+"\n");
-
-		Double principal = 0.0;
-		Double period = 0.0;
-		Double interest = 0.0;
-		Double mpayments = (interest/12)*principal/(Math.pow(period,1-(1+(interest/12))));
+//Calculations
+		Double principalVal = 0.0;
+		Double periodVal = 0.0;
+		Double interestVal = 0.0;
+		
+		String principalText = request.getParameter("principal");
+		String periodText = request.getParameter("period");
+		String interestText = request.getParameter("interest");
+		
+		if(principalText != null)
+		{
+			principalVal = Double.parseDouble(principalText);
+			principalOld = principalVal;
+			flag1 = false;
+		}
+		else if(flag1)
+		{
+			principalVal = Double.parseDouble(this.getServletContext().getInitParameter("principal"));
+			principalOld = principalVal;
+		}
+		else
+		{
+			principalVal = principalOld;
+		}
+		
+		
+		if(periodText != null)
+		{
+			periodVal = Double.parseDouble(periodText);
+			periodOld = periodVal;
+			flag2 = false;
+		}
+		else if(flag2)
+		{
+			periodVal = Double.parseDouble(this.getServletContext().getInitParameter("period"));
+			periodOld = periodVal;
+		}
+		else
+		{
+			periodVal = periodOld;
+		}
+		
+		
+	
+		if(interestText != null){
+			interestVal=Double.parseDouble(interestText);
+		}else{
+			interestVal=Double.parseDouble(this.getServletContext().getInitParameter("interest"));
+		}
+		
+		
+		//Output		
 		resOut.write("---- Monthly Payments ----\n");
-		resOut.write("Based on Principal="+principal+" Period="+period+" Interest="+interest+"\n");
-		resOut.write("Monthly Payments: "+mpayments);
+		resOut.write("Based on Principal="+principalVal+" Period="+periodVal+" Interest="+interestVal+"\n");
+		//Computation for payments
+		interestVal = interestVal * 0.01;
+		Double mpaymentsVal = ((interestVal)/12)*principalVal/(1-Math.pow(1+((interestVal)/12), (-1)*periodVal));;		
+		DecimalFormat df = new DecimalFormat("#.####");
+		df.setMaximumFractionDigits(2);
+		resOut.write("Monthly Payments: "+df.format(mpaymentsVal)+"\n");	
 		//Double principal=Double.parseDouble(this.getServletContext().getInitParameter("principal"));
-		if(request.getRequestURI().contains("YorkBank"))
-		response.sendRedirect(url);
+		if(request.getRequestURI().contains("Startup/YorkBank"))
+		response.sendRedirect(url+"/Start");
+		
+		
+		
 	}
 
 	/**
