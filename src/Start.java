@@ -19,6 +19,8 @@ public class Start extends HttpServlet {
 	private Boolean flag1 = true ,flag2 = true;
 	private Double principalOld=null;
 	private Double periodOld=null;
+	String startPage="/UI.jspx";
+	String resultPage="/Result.jspx";
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -35,106 +37,117 @@ public class Start extends HttpServlet {
 		//response.getWriter().append("Served at 4413 at this location: ").append(request.getContextPath());
 		
 //Output and parsing	
-		response.setContentType("text/plain");
-		Writer resOut = response.getWriter();
-		resOut.write("Hello World!\n");
-	
-		String clientIP = request.getRemoteAddr();
-		resOut.write("Client IP:"+ clientIP+"\n");
+	if (request.getParameter("calculate")==null) {
+				   request.getRequestDispatcher(startPage).forward(request,response);
+				
+			response.setContentType("text/plain");
+			Writer resOut = response.getWriter();
+			resOut.write("Hello World!\n");
 		
-		int clientPort = request.getRemotePort();
-		resOut.write("Client Port: "+clientPort+"\n");
+			String clientIP = request.getRemoteAddr();
+			resOut.write("Client IP:"+ clientIP+"\n");
+			
+			int clientPort = request.getRemotePort();
+			resOut.write("Client Port: "+clientPort+"\n");
+			
+			
+			boolean flagged = true;
+			if(flagged)
+				resOut.write("This IP has been flagged! \n");
+			else
+				resOut.write("This Ip has not been flagged! \n");
+			
+			
+			String clientProtocol = request.getProtocol();
+			resOut.write("Client Protocal: "+clientProtocol+"\n");
+			
+			String action = request.getMethod();
+			resOut.write("Client Method "+action+". \n");
+			
+			String queryString = request.getQueryString();
+			resOut.write("Query String: "+queryString+"\n");
+			
+			//String foo = request.getParameter("foo");
+			//resOut.write("Query Param foo= "+ foo + "\n");
 		
+			String url = this.getServletContext().getContextPath()+"/Start";
+			resOut.write("Request URI: "+url+" \n");
+			
+			String servletPath = request.getServletPath();
+			resOut.write("Request Servlet Path :"+servletPath+"\n");
+	//Calculations
+			Double principalVal = 0.0;
+			Double periodVal = 0.0;
+			Double interestVal = 0.0;
+			
+			String principalText = request.getParameter("principal");
+			String periodText = request.getParameter("period");
+			String interestText = request.getParameter("interest");
+			
+			if(principalText != null)
+			{
+				principalVal = Double.parseDouble(principalText);
+				principalOld = principalVal;
+				flag1 = false;
+			}
+			else if(flag1)
+			{
+				principalVal = Double.parseDouble(this.getServletContext().getInitParameter("principal"));
+				principalOld = principalVal;
+			}
+			else
+			{
+				principalVal = principalOld;
+			}
+			
+			
+			if(periodText != null)
+			{
+				periodVal = Double.parseDouble(periodText);
+				periodOld = periodVal;
+				flag2 = false;
+			}
+			else if(flag2)
+			{
+				periodVal = Double.parseDouble(this.getServletContext().getInitParameter("period"));
+				periodOld = periodVal;
+			}
+			else
+			{
+				periodVal = periodOld;
+			}
+			
+			
 		
-		boolean flagged = true;
-		if(flagged)
-			resOut.write("This IP has been flagged! \n");
-		else
-			resOut.write("This Ip has not been flagged! \n");
-		
-		
-		String clientProtocol = request.getProtocol();
-		resOut.write("Client Protocal: "+clientProtocol+"\n");
-		
-		String action = request.getMethod();
-		resOut.write("Client Method "+action+". \n");
-		
-		String queryString = request.getQueryString();
-		resOut.write("Query String: "+queryString+"\n");
-		
-		//String foo = request.getParameter("foo");
-		//resOut.write("Query Param foo= "+ foo + "\n");
-	
-		String url = this.getServletContext().getContextPath()+"/Start";
-		resOut.write("Request URI: "+url+" \n");
-		
-		String servletPath = request.getServletPath();
-		resOut.write("Request Servlet Path :"+servletPath+"\n");
-//Calculations
-		Double principalVal = 0.0;
-		Double periodVal = 0.0;
-		Double interestVal = 0.0;
-		
-		String principalText = request.getParameter("principal");
-		String periodText = request.getParameter("period");
-		String interestText = request.getParameter("interest");
-		
-		if(principalText != null)
-		{
-			principalVal = Double.parseDouble(principalText);
-			principalOld = principalVal;
-			flag1 = false;
+			if(interestText != null){
+				interestVal=Double.parseDouble(interestText);
+			}else{
+				interestVal=Double.parseDouble(this.getServletContext().getInitParameter("interest"));
+			}
+			
+			
+			//Output		
+			resOut.write("---- Monthly Payments ----\n");
+			resOut.write("Based on Principal="+principalVal+" Period="+periodVal+" Interest="+interestVal+"\n");
+			//Computation for payments
+			interestVal = interestVal * 0.01;
+			Double mpaymentsVal = ((interestVal)/12)*principalVal/(1-Math.pow(1+((interestVal)/12), (-1)*periodVal));;		
+			DecimalFormat df = new DecimalFormat("#.####");
+			df.setMaximumFractionDigits(2);
+			resOut.write("Monthly Payments: $"+df.format(mpaymentsVal)+"\n");	
+			//Double principal=Double.parseDouble(this.getServletContext().getInitParameter("principal"));
+			if(request.getRequestURI().contains("Startup/YorkBank"))
+			response.sendRedirect(url+"/Start");
+	}
+	else {  // if "calculate" parameter is !=null it means the call comes from UI.jspx..
+			
+		    /*here goes all the code of the lab 2..getParemters from form, do the processing, setAtributes...etc..
+		     * 
+		     */
+			//then dispatch the control to Result.jspx page to display the results.	
+		    request.getRequestDispatcher(resultPage).forward(request,response);
+				
 		}
-		else if(flag1)
-		{
-			principalVal = Double.parseDouble(this.getServletContext().getInitParameter("principal"));
-			principalOld = principalVal;
-		}
-		else
-		{
-			principalVal = principalOld;
-		}
-		
-		
-		if(periodText != null)
-		{
-			periodVal = Double.parseDouble(periodText);
-			periodOld = periodVal;
-			flag2 = false;
-		}
-		else if(flag2)
-		{
-			periodVal = Double.parseDouble(this.getServletContext().getInitParameter("period"));
-			periodOld = periodVal;
-		}
-		else
-		{
-			periodVal = periodOld;
-		}
-		
-		
-	
-		if(interestText != null){
-			interestVal=Double.parseDouble(interestText);
-		}else{
-			interestVal=Double.parseDouble(this.getServletContext().getInitParameter("interest"));
-		}
-		
-		
-		//Output		
-		resOut.write("---- Monthly Payments ----\n");
-		resOut.write("Based on Principal="+principalVal+" Period="+periodVal+" Interest="+interestVal+"\n");
-		//Computation for payments
-		interestVal = interestVal * 0.01;
-		Double mpaymentsVal = ((interestVal)/12)*principalVal/(1-Math.pow(1+((interestVal)/12), (-1)*periodVal));;		
-		DecimalFormat df = new DecimalFormat("#.####");
-		df.setMaximumFractionDigits(2);
-		resOut.write("Monthly Payments: $"+df.format(mpaymentsVal)+"\n");	
-		//Double principal=Double.parseDouble(this.getServletContext().getInitParameter("principal"));
-		if(request.getRequestURI().contains("Startup/YorkBank"))
-		response.sendRedirect(url+"/Start");
-		
-		
 		
 	}
 
