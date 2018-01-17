@@ -13,14 +13,13 @@
 </head>
 <body>
 <form action='Start' method='get'>
-   <table>
    <tr>
      <td> <label for="principal">Principal<div>total loan amount after studies)</div></label> </td>
      <td> <input name="principal" id="principal" type="number" step="1"/></td>
    </tr>
    <tr>
      <td> <label for="interest">Annual Interest Rate</label> </td>
-     <td> <input name="interest" id="interest" type="number"/></td>
+     <td> <input name="interest" id="interest" type="number" step= 0.01/></td>
    </tr>
    <tr>
      <td> <label for="period">Payment Period</label><div>(total number of months)</div> </td>

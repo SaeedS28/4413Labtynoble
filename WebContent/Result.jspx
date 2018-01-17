@@ -8,7 +8,7 @@
 		omit-xml-declaration="true" />
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Insert title here</title>
+<title>Results</title>
 </head>
 <body>
 This is the result page...check the samples in the lectures on how to get the attributes..
