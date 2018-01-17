@@ -1,4 +1,4 @@
-
+//Begin Lab 2
 
 import java.io.IOException;
 import java.io.Writer;
@@ -129,7 +129,7 @@ public class Start extends HttpServlet {
 		Double mpaymentsVal = ((interestVal)/12)*principalVal/(1-Math.pow(1+((interestVal)/12), (-1)*periodVal));;		
 		DecimalFormat df = new DecimalFormat("#.####");
 		df.setMaximumFractionDigits(2);
-		resOut.write("Monthly Payments: "+df.format(mpaymentsVal)+"\n");	
+		resOut.write("Monthly Payments: $"+df.format(mpaymentsVal)+"\n");	
 		//Double principal=Double.parseDouble(this.getServletContext().getInitParameter("principal"));
 		if(request.getRequestURI().contains("Startup/YorkBank"))
 		response.sendRedirect(url+"/Start");

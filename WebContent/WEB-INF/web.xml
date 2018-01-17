@@ -20,11 +20,11 @@
   </context-param>
   <context-param>
     <param-name>period</param-name>
-    <param-value>1000</param-value>
+    <param-value>12</param-value>
   </context-param>
   <context-param>
     <param-name>interest</param-name>
-    <param-value>1000</param-value>
+    <param-value>2</param-value>
   </context-param>
   <error-page>
     <exception-type>java.lang.Exception</exception-type>
