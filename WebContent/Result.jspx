@@ -11,7 +11,21 @@
 <title>Results</title>
 </head>
 <body>
-This is the result page...check the samples in the lectures on how to get the attributes..
+<legend>Student Loan Calculator</legend>
+<fieldset>
+	<form>
+		<table>
+			<tr>
+				<TD name="grace" id="grace" >Grace Period Interest: </TD>
+				<TD > $Cost </TD>
+			</tr>
+			<tr>
+				<TD name="payments" id="payments">Monthly Payments: </TD>
+				<TD > $payments </TD>
+			</tr>
+		</table>
+	</form>
+</fieldset>
 </body>
 </html>
 </jsp:root>

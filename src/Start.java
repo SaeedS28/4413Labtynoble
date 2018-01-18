@@ -19,6 +19,10 @@ public class Start extends HttpServlet {
 	private Boolean flag1 = true ,flag2 = true;
 	private Double principalOld=null;
 	private Double periodOld=null;
+	private static final String GRACE = "grace";
+	private static final String PRINCIPAL = "principal";
+	private static final String INTEREST = "interest";
+	private static final String PERIOD = "period";
 	String startPage="/UI.jspx";
 	String resultPage="/Result.jspx";
     /**

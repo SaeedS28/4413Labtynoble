@@ -13,13 +13,16 @@
 </head>
 <body>
 <form action='Start' method='get'>
+<fieldset>
+<legend>Student Loan Application</legend>
+ <TABLE>
    <tr>
      <td> <label for="principal">Principal<div>total loan amount after studies)</div></label> </td>
      <td> <input name="principal" id="principal" type="number" step="1"/></td>
    </tr>
    <tr>
      <td> <label for="interest">Annual Interest Rate</label> </td>
-     <td> <input name="interest" id="interest" type="number" step= 0.01/></td>
+     <td> <input name="interest" id="interest" type="number" step= "0.01"/></td>
    </tr>
    <tr>
      <td> <label for="period">Payment Period</label><div>(total number of months)</div> </td>
@@ -35,7 +38,8 @@
     	</td>
    </tr>
    
-   </table>
+   </TABLE>
+   </fieldset>
 </form>
 </body>
 </html>
