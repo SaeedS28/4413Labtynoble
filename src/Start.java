@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(urlPatterns={"/Start","/Startup","/Startup/*","/Start/*"})
 public class Start extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private Boolean flag1 = true ,flag2 = true, flag3 = true, flag4 = true;
+	private Boolean flag1 = true ,flag2 = true;
 	private Double principalOld=null;
 	private Double periodOld=null;
 	private static final String TOTAL_VALUE = "totalValue";
@@ -56,12 +56,11 @@ public class Start extends HttpServlet {
 		String fixedInterestText= request.getParameter("fixedInterest");
 		String graceOnText = request.getParameter("grace");
 		
+		
 // if there is nothing in the parameters
 	if (request.getParameter("submit")==null) {
 				   request.getRequestDispatcher(startPage).forward(request,response);
-		
-	
-			
+					
 	
 				//Set Writers and output
 			response.setContentType("text/plain");
@@ -116,16 +115,7 @@ public class Start extends HttpServlet {
 				principalVal = principalOld;
 			}
 			
-			if(graceOnText != null)
-			{
-				System.out.println(graceOnText);
-				graceOnVal = Boolean.valueOf(graceOnText);
-				System.out.println(graceOnVal); 
-			}
-			else
-			{
-				graceOnVal= false;
-			}
+			
 			
 			if(periodText != null)
 			{
@@ -143,26 +133,47 @@ public class Start extends HttpServlet {
 				periodVal = periodOld;
 			}
 	
-			if(interestText != null){
-				interestVal=Double.parseDouble(interestText)+ fixedInterestVal;
-			}else{
-				interestVal=Double.parseDouble(this.getServletContext().getInitParameter("interest"));
-			}
 			
-			//if grace period is not clicked   
-			if(request.getParameter("gracePeriod") != null) {
-				gracePeriod = Double.parseDouble(this.getServletContext().getInitParameter("gracePeriod"));
-				graceInterestVal= principalVal * ((interestVal)/12)*gracePeriod ;
-				totalPrincipalVal= mpaymentsVal+(graceInterestVal/gracePeriod);
-			}
-			else
+//This needs to be calculated anyways^
+			
+//now if grace is checked we do this
+			if(request.getParameter("gracePeriod")!=null)
 			{
-				totalInterestVal = interestVal
-						+ Double.parseDouble(this.getServletContext().getInitParameter("fixedInterest"))
+				gracePeriod = Double.parseDouble(this.getServletContext().getInitParameter("gracePeriod"));
+				
+				resOut.write("Period: " + periodVal + "<html>&emsp;</html>");
+				if (interestText != null) {
+					interestVal = Double.parseDouble(interestText);
+				} else {
+					interestVal = Double.parseDouble(this.getServletContext().getInitParameter("interest"));
+				}
+				totalInterestVal = interestVal + Double.parseDouble(this.getServletContext().getInitParameter("fixedInterest"));
+				
+				
+				 mpaymentsVal = ((0.01 * totalInterestVal) / 12) * principalVal
+						/ (1 - Math.pow(1 + ((0.01 * totalInterestVal) / 12), (-1) * periodVal));
+
+				 graceInterestVal =principalVal+((totalInterestVal)/12)*gracePeriod;
+					
+					totalPrincipalVal= mpaymentsVal+(graceInterestVal/gracePeriod);
+			}
+			else if(request.getParameter("gracePeriod")==null)
+			{
+				resOut.write("Period: " + periodVal + "<html>&emsp;</html>");
+				if (interestText != null) {
+					interestVal = Double.parseDouble(interestText);
+				} else {
+					interestVal = Double.parseDouble(this.getServletContext().getInitParameter("interest"));
+				}
+				 totalInterestVal = interestVal
+						+ Double.parseDouble(this.getServletContext().getInitParameter("fixedInterest"));
+
 				totalPrincipalVal = ((0.01 * totalInterestVal) / 12) * principalVal
 						/ (1 - Math.pow(1 + ((0.01 * totalInterestVal) / 12), (-1) * periodVal));
 			}
-		
+			
+			
+			
 			
 			
 			//Output		
@@ -172,15 +183,6 @@ public class Start extends HttpServlet {
 			request.setAttribute(INTEREST,df.format(graceInterestVal));
 			request.getRequestDispatcher(resultPage).forward(request,response);
 	}
-	else {  // if "calculate" parameter is !=null it means the call comes from UI.jspx..
-			
-		    /*here goes all the code of the lab 2..getParemters from form, do the processing, setAtributes...etc..
-		     * 
-		     */
-			//then dispatch the control to Result.jspx page to display the results.	
-		    request.getRequestDispatcher(resultPage).forward(request,response);
-				
-		}
 		
 	}
 

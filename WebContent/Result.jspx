@@ -15,14 +15,14 @@ title="cse4413" media="screen, print"/>
 <body>
 <legend>Student Loan Calculator</legend>
 <fieldset>
-	<form>
+	<form action="/studentCalc1/Start" method="get">
 		<table>
 			<tr>
-				<TD name="grace" id="grace" >Grace Period Interest: </TD>
+				<TD name="interest" id="interest" >Grace Period Interest: </TD>
 				<td>${requestScope['interest']}</td>
 			</tr>
 			<tr>
-				<TD name="payments" id="payments">Monthly Payments: </TD>
+				<TD name="principal" id="principal">Monthly Payments: </TD>
 				<td>${requestScope['principal']}</td>
 			</tr>
 			<TR>

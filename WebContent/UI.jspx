@@ -20,15 +20,15 @@ title="cse4413" media="screen, print"/>
  <TABLE>
    <tr>
      <td> <label for="principal">Principal<div>total loan amount after studies)</div></label> </td>
-     <td> <input name="principal" id="principal" type="number" step="1"/></td>
+     <td> <input name="principal" id="principal" type="number" step="1" value="1000"/></td>
    </tr>
    <tr>
      <td> <label for="interest">Annual Interest Rate</label> </td>
-     <td> <input name="interest" id="interest" type="number" step= "0.01"/></td>
+     <td> <input name="interest" id="interest" type="number" step= "0.01" value="2"/></td>
    </tr>
    <tr>
      <td> <label for="period">Payment Period</label><div>(total number of months)</div> </td>
-     <td> <input name="period" id="period" type="number" step="0.1"/></td>
+     <td> <input name="period" id="period" type="number" step="0.1" value="12"/></td>
    </tr>
    <tr>
      <td> <label for="grace">Grace Period</label> <div>(Take advantage of 6 month grace period and include grace period interest with your loan balance)</div></td>
