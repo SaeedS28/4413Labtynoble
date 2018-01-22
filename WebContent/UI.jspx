@@ -8,6 +8,8 @@
 		omit-xml-declaration="true" />
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<link rel="StyleSheet" href="res/mc.css" type="text/css"
+title="cse4413" media="screen, print"/>
 <title>OSAP Calculator</title>
 
 </head>
@@ -34,7 +36,7 @@
    </tr>
 	<tr>
     	<td>
-    	<button type='submit' name='calculate' value='true' id='calculate' onclick =""> Submit</button>
+    	<button type='submit' name='calculate' value='124724true' id='calculate' onclick =""> Submit</button>
     	</td>
    </tr>
    

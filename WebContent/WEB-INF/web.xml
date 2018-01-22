@@ -25,6 +25,17 @@
   <context-param>
     <param-name>interest</param-name>
     <param-value>2</param-value>
+  </context-param><context-param>
+    <param-name>fixedInterest</param-name>
+    <param-value>5</param-value>
+  </context-param>
+ 	<context-param>
+    <param-name>gracePeriod</param-name>
+    <param-value>6</param-value>
+  </context-param>
+  <context-param>
+    <param-name>grace</param-name>
+    <param-value>3</param-value>
   </context-param>
   <error-page>
     <exception-type>java.lang.Exception</exception-type>

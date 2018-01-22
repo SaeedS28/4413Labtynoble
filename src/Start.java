@@ -16,13 +16,14 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(urlPatterns={"/Start","/Startup","/Startup/*"})
 public class Start extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private Boolean flag1 = true ,flag2 = true;
+	private Boolean flag1 = true ,flag2 = true, flag3 = true, flag4 = true;
 	private Double principalOld=null;
 	private Double periodOld=null;
 	private static final String GRACE = "grace";
 	private static final String PRINCIPAL = "principal";
 	private static final String INTEREST = "interest";
 	private static final String PERIOD = "period";
+	private static final String FIXEDINTEREST="fixedInterest";
 	String startPage="/UI.jspx";
 	String resultPage="/Result.jspx";
     /**
@@ -80,14 +81,21 @@ public class Start extends HttpServlet {
 			String servletPath = request.getServletPath();
 			resOut.write("Request Servlet Path :"+servletPath+"\n");
 	//Calculations
+			Boolean graceOnVal;
 			Double principalVal = 0.0;
 			Double periodVal = 0.0;
 			Double interestVal = 0.0;
-			
+			Double fixedInterestVal= 0.0;
+			Double graceInterestVal=0.0;
+			Double gracePeriod=0.0;
+			Double mpaymentsVal= 0.0;
 			String principalText = request.getParameter("principal");
 			String periodText = request.getParameter("period");
 			String interestText = request.getParameter("interest");
+			String fixedInterestText= request.getParameter("fixedInterest");
+			String graceOnText = request.getParameter("grace");
 			
+		
 			if(principalText != null)
 			{
 				principalVal = Double.parseDouble(principalText);
@@ -104,6 +112,16 @@ public class Start extends HttpServlet {
 				principalVal = principalOld;
 			}
 			
+			if(graceOnText != null)
+			{
+				System.out.println(graceOnText);
+				graceOnVal = Boolean.valueOf(graceOnText);
+				System.out.println(graceOnVal); 
+			}
+			else
+			{
+				graceOnVal= false;
+			}
 			
 			if(periodText != null)
 			{
@@ -120,26 +138,25 @@ public class Start extends HttpServlet {
 			{
 				periodVal = periodOld;
 			}
-			
-			
-		
+	
 			if(interestText != null){
-				interestVal=Double.parseDouble(interestText);
+				interestVal=Double.parseDouble(interestText)+ fixedInterestVal;
 			}else{
 				interestVal=Double.parseDouble(this.getServletContext().getInitParameter("interest"));
 			}
 			
+		
+			graceInterestVal= principalVal * ((interestVal)/12)*gracePeriod ;
 			
 			//Output		
 			resOut.write("---- Monthly Payments ----\n");
 			resOut.write("Based on Principal="+principalVal+" Period="+periodVal+" Interest="+interestVal+"\n");
 			//Computation for payments
 			interestVal = interestVal * 0.01;
-			Double mpaymentsVal = ((interestVal)/12)*principalVal/(1-Math.pow(1+((interestVal)/12), (-1)*periodVal));;		
+			mpaymentsVal = ((interestVal)/12)*principalVal/(1-Math.pow(1+((interestVal)/12), (-1)*periodVal))+(graceInterestVal/gracePeriod);		
 			DecimalFormat df = new DecimalFormat("#.####");
 			df.setMaximumFractionDigits(2);
 			resOut.write("Monthly Payments: $"+df.format(mpaymentsVal)+"\n");	
-			//Double principal=Double.parseDouble(this.getServletContext().getInitParameter("principal"));
 			if(request.getRequestURI().contains("Startup/YorkBank"))
 			response.sendRedirect(url+"/Start");
 	}
