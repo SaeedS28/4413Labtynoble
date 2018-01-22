@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class Start
  */
-@WebServlet(urlPatterns={"/Start","/Startup","/Startup/*"})
+@WebServlet(urlPatterns={"/Start","/Startup","/Startup/*","/Start/*"})
 public class Start extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Boolean flag1 = true ,flag2 = true, flag3 = true, flag4 = true;
