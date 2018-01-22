@@ -40,11 +40,28 @@ public class Start extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at 4413 at this location: ").append(request.getContextPath());
+		Boolean graceOnVal;
+		Double principalVal = 0.0;
+		Double periodVal = 0.0;
+		Double interestVal = 0.0;
+		Double fixedInterestVal= 0.0;
+		Double graceInterestVal=0.0;
+		Double gracePeriod=0.0;
+		Double mpaymentsVal= 0.0;
+		String principalText = request.getParameter("principal");
+		String periodText = request.getParameter("period");
+		String interestText = request.getParameter("interest");
+		String fixedInterestText= request.getParameter("fixedInterest");
+		String graceOnText = request.getParameter("grace");
 		
-//Output and parsing	
-	if (request.getParameter("calculate")==null) {
+// if there is nothing in the parameters
+	if (request.getParameter("submit")==null) {
 				   request.getRequestDispatcher(startPage).forward(request,response);
-				
+		
+	
+			
+	
+				//Set Writers and output
 			response.setContentType("text/plain");
 			Writer resOut = response.getWriter();
 			resOut.write("Hello World!\n");
@@ -72,28 +89,13 @@ public class Start extends HttpServlet {
 			String queryString = request.getQueryString();
 			resOut.write("Query String: "+queryString+"\n");
 			
-			//String foo = request.getParameter("foo");
-			//resOut.write("Query Param foo= "+ foo + "\n");
-		
 			String url = this.getServletContext().getContextPath()+"/Start";
 			resOut.write("Request URI: "+url+" \n");
 			
 			String servletPath = request.getServletPath();
 			resOut.write("Request Servlet Path :"+servletPath+"\n");
 	//Calculations
-			Boolean graceOnVal;
-			Double principalVal = 0.0;
-			Double periodVal = 0.0;
-			Double interestVal = 0.0;
-			Double fixedInterestVal= 0.0;
-			Double graceInterestVal=0.0;
-			Double gracePeriod=0.0;
-			Double mpaymentsVal= 0.0;
-			String principalText = request.getParameter("principal");
-			String periodText = request.getParameter("period");
-			String interestText = request.getParameter("interest");
-			String fixedInterestText= request.getParameter("fixedInterest");
-			String graceOnText = request.getParameter("grace");
+		
 			
 		
 			if(principalText != null)
@@ -145,8 +147,13 @@ public class Start extends HttpServlet {
 				interestVal=Double.parseDouble(this.getServletContext().getInitParameter("interest"));
 			}
 			
+			//if grace period is not clicked   
+			if(request.getParameter("gracePeriod") != null) {
+				gracePeriod = Double.parseDouble(this.getServletContext().getInitParameter("gracePeriod"));
+				graceInterestVal= principalVal * ((interestVal)/12)*gracePeriod ;
+			}
 		
-			graceInterestVal= principalVal * ((interestVal)/12)*gracePeriod ;
+			
 			
 			//Output		
 			resOut.write("---- Monthly Payments ----\n");

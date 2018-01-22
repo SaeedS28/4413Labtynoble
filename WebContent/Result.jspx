@@ -19,12 +19,15 @@ title="cse4413" media="screen, print"/>
 		<table>
 			<tr>
 				<TD name="grace" id="grace" >Grace Period Interest: </TD>
-				<TD > $Cost </TD>
+				<td>${requestScope['interest']}</td>
 			</tr>
 			<tr>
 				<TD name="payments" id="payments">Monthly Payments: </TD>
-				<TD > $payments </TD>
+				<td>${requestScope['principal']}</td>
 			</tr>
+			<TR>
+				<TD><input id='reset' type="submit" value="Restart"/></TD>
+			</TR>
 		</table>
 	</form>
 </fieldset>
