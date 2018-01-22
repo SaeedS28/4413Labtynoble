@@ -36,7 +36,7 @@ title="cse4413" media="screen, print"/>
    </tr>
 	<tr>
     	<td>
-    	<button type='submit' name='calculate' value='124724true' id='calculate' onclick =""> Submit</button>
+    	<button type='submit' name='calculate' value='true' id='calculate' onclick =""> Submit</button>
     	</td>
    </tr>
    
