@@ -33,10 +33,6 @@
     <param-name>gracePeriod</param-name>
     <param-value>6</param-value>
   </context-param>
-  <context-param>
-    <param-name>grace</param-name>
-    <param-value>3</param-value>
-  </context-param>
   <error-page>
     <exception-type>java.lang.Exception</exception-type>
     <location>/res/myException.jspx</location>
