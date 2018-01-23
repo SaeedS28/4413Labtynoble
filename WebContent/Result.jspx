@@ -12,7 +12,7 @@
 <title>Result</title>
 </head>
 <body>
-	<FORM action="/studentCalc2/Start" method="GET">
+	<FORM action="/studentCalc1/Start" method="GET">
 	<legend>Student Loan Application</legend>
 	<FIELDSET>
 	<TABLE>

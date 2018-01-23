@@ -95,7 +95,7 @@ public class Start extends HttpServlet {
 //This needs to be calculated anyways^
 			
 //now if grace is checked we do this
-			if(request.getParameter("gracePeriod")!=null)
+			if(request.getParameter("grace")!=null)
 			{
 				gracePeriod = Double.parseDouble(this.getServletContext().getInitParameter("gracePeriod"));
 				totalInterestVal = interestVal + Double.parseDouble(this.getServletContext().getInitParameter("fixedInterest"));
@@ -105,8 +105,9 @@ public class Start extends HttpServlet {
 				totalPrincipalVal= mpaymentsVal+(graceInterestVal/gracePeriod);
 				totalInterestVal = graceInterestVal;
 			}
-			else if(request.getParameter("gracePeriod")==null)
+			else if(request.getParameter("grace")==null)
 			{
+				System.out.println("so graceperiod is always null");
 				totalInterestVal = interestVal	+ Double.parseDouble(this.getServletContext().getInitParameter("fixedInterest"));
 				totalPrincipalVal = ((0.01 * totalInterestVal) / 12) * principalVal	/ (1 - Math.pow(1 + ((0.01 * totalInterestVal) / 12), (-1) * periodVal));
 			}
