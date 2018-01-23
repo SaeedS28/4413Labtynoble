@@ -49,9 +49,7 @@ public class Start extends HttpServlet {
 		String principalText = request.getParameter("principal");
 		String periodText = request.getParameter("period");
 		String interestText = request.getParameter("interest");
-		//request.getParameter("fixedInterest");
-		//request.getParameter("grace");
-		
+	
 	
 // if there is nothing in the parameters
 	if (request.getParameter("Submit")==null) 
@@ -88,6 +86,7 @@ public class Start extends HttpServlet {
 			{
 				periodVal = periodOld;
 			}			
+		
 			if (interestText != null) {
 				interestVal = Double.parseDouble(interestText);
 			} else {
@@ -99,19 +98,16 @@ public class Start extends HttpServlet {
 			if(request.getParameter("gracePeriod")!=null)
 			{
 				gracePeriod = Double.parseDouble(this.getServletContext().getInitParameter("gracePeriod"));
-				
 				totalInterestVal = interestVal + Double.parseDouble(this.getServletContext().getInitParameter("fixedInterest"));
-				
-				 mpaymentsVal = ((0.01 * totalInterestVal) / 12) * principalVal	/ (1 - Math.pow(1 + ((0.01 * totalInterestVal) / 12), (-1) * periodVal)); 
-
-				 graceInterestVal =principalVal+((totalInterestVal)/12)*gracePeriod; //one of these is 0
-					
+				mpaymentsVal = ((0.01 * totalInterestVal) / 12) * principalVal	/ (1 - Math.pow(1 + ((0.01 * totalInterestVal) / 12), (-1) * periodVal)); 
+			    graceInterestVal =principalVal+((totalInterestVal)/12)*gracePeriod; //one of these is 0		
+				System.out.println(graceInterestVal+"yoo its grace interest");
 				totalPrincipalVal= mpaymentsVal+(graceInterestVal/gracePeriod);
+				totalInterestVal = graceInterestVal;
 			}
 			else if(request.getParameter("gracePeriod")==null)
 			{
 				totalInterestVal = interestVal	+ Double.parseDouble(this.getServletContext().getInitParameter("fixedInterest"));
-
 				totalPrincipalVal = ((0.01 * totalInterestVal) / 12) * principalVal	/ (1 - Math.pow(1 + ((0.01 * totalInterestVal) / 12), (-1) * periodVal));
 			}
 			
@@ -120,10 +116,11 @@ public class Start extends HttpServlet {
 			//Output		
 			DecimalFormat df = new DecimalFormat("#.####");
 			df.setMaximumFractionDigits(2);
+			System.out.println("total interest"+ totalInterestVal + "Principal total is "+ totalPrincipalVal + "Interest value"+ interestVal);
+
 			request.setAttribute(PRINCIPAL,df.format(totalPrincipalVal));
 			request.setAttribute(INTEREST,df.format(totalInterestVal));
 			request.getRequestDispatcher(resultPage).forward(request,response);
-			
 	}
 	
 			
