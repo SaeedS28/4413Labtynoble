@@ -150,9 +150,9 @@ public class Start extends HttpServlet {
 				totalInterestVal = interestVal + Double.parseDouble(this.getServletContext().getInitParameter("fixedInterest"));
 				
 				
-				 mpaymentsVal = ((0.01 * totalInterestVal) / 12) * principalVal	/ (1 - Math.pow(1 + ((0.01 * totalInterestVal) / 12), (-1) * periodVal));
+				 mpaymentsVal = ((0.01 * totalInterestVal) / 12) * principalVal	/ (1 - Math.pow(1 + ((0.01 * totalInterestVal) / 12), (-1) * periodVal)); 
 
-				 graceInterestVal =principalVal+((totalInterestVal)/12)*gracePeriod;
+				 graceInterestVal =principalVal+((totalInterestVal)/12)*gracePeriod; //one of these is 0
 					
 				totalPrincipalVal= mpaymentsVal+(graceInterestVal/gracePeriod);
 			}
