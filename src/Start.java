@@ -58,9 +58,9 @@ public class Start extends HttpServlet {
 		
 		
 // if there is nothing in the parameters
-	if (request.getParameter("Submit")==null) {
+	if (request.getParameter("Submit")==null) 
 				   request.getRequestDispatcher(startPage).forward(request,response);
-					
+	else {
 	
 				//Set Writers and output
 			response.setContentType("text/plain");
@@ -177,10 +177,11 @@ public class Start extends HttpServlet {
 			request.setAttribute(PRINCIPAL,df.format(totalPrincipalVal));
 			request.setAttribute(INTEREST,df.format(graceInterestVal));
 			request.getRequestDispatcher(resultPage).forward(request,response);
-	
-	}
 			
 	}
+	
+			
+}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
