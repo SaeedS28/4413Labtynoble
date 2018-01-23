@@ -19,7 +19,6 @@ public class Start extends HttpServlet {
 	private Boolean flag1 = true ,flag2 = true;
 	private Double principalOld=null;
 	private Double periodOld=null;
-	private static final String TOTAL_VALUE = "totalValue";
 	private static final String PRINCIPAL = "principal";
 	private static final String INTEREST = "interest";
 //	private static final String PERIOD = "period";
@@ -38,13 +37,10 @@ public class Start extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at 4413 at this location: ").append(request.getContextPath());
-		Boolean graceOnVal;
+		Writer resOut = response.getWriter();
 		Double principalVal = 0.0;
 		Double periodVal = 0.0;
 		Double interestVal = 0.0;
-		Double fixedInterestVal= 0.0;
 		Double graceInterestVal=0.0;
 		Double gracePeriod=0.0;
 		Double mpaymentsVal= 0.0;
@@ -53,52 +49,14 @@ public class Start extends HttpServlet {
 		String principalText = request.getParameter("principal");
 		String periodText = request.getParameter("period");
 		String interestText = request.getParameter("interest");
-		String fixedInterestText= request.getParameter("fixedInterest");
-		String graceOnText = request.getParameter("grace");
+		//request.getParameter("fixedInterest");
+		//request.getParameter("grace");
 		
-		
+	
 // if there is nothing in the parameters
 	if (request.getParameter("Submit")==null) 
 				   request.getRequestDispatcher(startPage).forward(request,response);
 	else {
-	
-				//Set Writers and output
-			response.setContentType("text/plain");
-			Writer resOut = response.getWriter();
-			resOut.write("Hello World!\n");
-		
-			String clientIP = request.getRemoteAddr();
-			resOut.write("Client IP:"+ clientIP+"\n");
-			
-			int clientPort = request.getRemotePort();
-			resOut.write("Client Port: "+clientPort+"\n");
-			
-			
-			boolean flagged = true;
-			if(flagged)
-				resOut.write("This IP has been flagged! \n");
-			else
-				resOut.write("This Ip has not been flagged! \n");
-			
-			
-			String clientProtocol = request.getProtocol();
-			resOut.write("Client Protocal: "+clientProtocol+"\n");
-			
-			String action = request.getMethod();
-			resOut.write("Client Method "+action+". \n");
-			
-			String queryString = request.getQueryString();
-			resOut.write("Query String: "+queryString+"\n");
-			
-			String url = this.getServletContext().getContextPath()+"/Start";
-			resOut.write("Request URI: "+url+" \n");
-			
-			String servletPath = request.getServletPath();
-			resOut.write("Request Servlet Path :"+servletPath+"\n");
-	//Calculations
-		
-			
-		
 			if(principalText != null)
 			{
 				principalVal = Double.parseDouble(principalText);
@@ -115,8 +73,6 @@ public class Start extends HttpServlet {
 				principalVal = principalOld;
 			}
 			
-			
-			
 			if(periodText != null)
 			{
 				periodVal = Double.parseDouble(periodText);
@@ -131,9 +87,12 @@ public class Start extends HttpServlet {
 			else
 			{
 				periodVal = periodOld;
+			}			
+			if (interestText != null) {
+				interestVal = Double.parseDouble(interestText);
+			} else {
+				interestVal = Double.parseDouble(this.getServletContext().getInitParameter("interest"));
 			}
-	
-			
 //This needs to be calculated anyways^
 			
 //now if grace is checked we do this
@@ -141,14 +100,7 @@ public class Start extends HttpServlet {
 			{
 				gracePeriod = Double.parseDouble(this.getServletContext().getInitParameter("gracePeriod"));
 				
-				resOut.write("Period: " + periodVal + "<html>&emsp;</html>");
-				if (interestText != null) {
-					interestVal = Double.parseDouble(interestText);
-				} else {
-					interestVal = Double.parseDouble(this.getServletContext().getInitParameter("interest"));
-				}
 				totalInterestVal = interestVal + Double.parseDouble(this.getServletContext().getInitParameter("fixedInterest"));
-				
 				
 				 mpaymentsVal = ((0.01 * totalInterestVal) / 12) * principalVal	/ (1 - Math.pow(1 + ((0.01 * totalInterestVal) / 12), (-1) * periodVal)); 
 
@@ -158,13 +110,7 @@ public class Start extends HttpServlet {
 			}
 			else if(request.getParameter("gracePeriod")==null)
 			{
-				resOut.write("Period: " + periodVal + "<html>&emsp;</html>");
-				if (interestText != null) {
-					interestVal = Double.parseDouble(interestText);
-				} else {
-					interestVal = Double.parseDouble(this.getServletContext().getInitParameter("interest"));
-				}
-				 totalInterestVal = interestVal	+ Double.parseDouble(this.getServletContext().getInitParameter("fixedInterest"));
+				totalInterestVal = interestVal	+ Double.parseDouble(this.getServletContext().getInitParameter("fixedInterest"));
 
 				totalPrincipalVal = ((0.01 * totalInterestVal) / 12) * principalVal	/ (1 - Math.pow(1 + ((0.01 * totalInterestVal) / 12), (-1) * periodVal));
 			}
@@ -175,7 +121,7 @@ public class Start extends HttpServlet {
 			DecimalFormat df = new DecimalFormat("#.####");
 			df.setMaximumFractionDigits(2);
 			request.setAttribute(PRINCIPAL,df.format(totalPrincipalVal));
-			request.setAttribute(INTEREST,df.format(graceInterestVal));
+			request.setAttribute(INTEREST,df.format(totalInterestVal));
 			request.getRequestDispatcher(resultPage).forward(request,response);
 			
 	}

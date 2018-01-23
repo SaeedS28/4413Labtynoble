@@ -12,10 +12,13 @@
 title="cse4413" media="screen, print"/>
 <title>Results</title>
 </head>
+
 <body>
-<legend>Student Loan Calculator</legend>
-<fieldset>
+
 	<form action="/studentCalc1/Start" method="get">
+		<legend>Student Loan Calculator</legend>
+		
+<fieldset>
 		<table>
 			<tr>
 				<TD name="interest" id="interest" >Grace Period Interest: </TD>
@@ -29,8 +32,9 @@ title="cse4413" media="screen, print"/>
 				<TD><input id='reset' type="submit" value="Restart"/></TD>
 			</TR>
 		</table>
-	</form>
+	
 </fieldset>
+</form>
 </body>
 </html>
 </jsp:root>
