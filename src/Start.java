@@ -58,7 +58,7 @@ public class Start extends HttpServlet {
 		
 		
 // if there is nothing in the parameters
-	if (request.getParameter("submit")==null) {
+	if (request.getParameter("Submit")==null) {
 				   request.getRequestDispatcher(startPage).forward(request,response);
 					
 	
@@ -150,12 +150,11 @@ public class Start extends HttpServlet {
 				totalInterestVal = interestVal + Double.parseDouble(this.getServletContext().getInitParameter("fixedInterest"));
 				
 				
-				 mpaymentsVal = ((0.01 * totalInterestVal) / 12) * principalVal
-						/ (1 - Math.pow(1 + ((0.01 * totalInterestVal) / 12), (-1) * periodVal));
+				 mpaymentsVal = ((0.01 * totalInterestVal) / 12) * principalVal	/ (1 - Math.pow(1 + ((0.01 * totalInterestVal) / 12), (-1) * periodVal));
 
 				 graceInterestVal =principalVal+((totalInterestVal)/12)*gracePeriod;
 					
-					totalPrincipalVal= mpaymentsVal+(graceInterestVal/gracePeriod);
+				totalPrincipalVal= mpaymentsVal+(graceInterestVal/gracePeriod);
 			}
 			else if(request.getParameter("gracePeriod")==null)
 			{
@@ -165,14 +164,10 @@ public class Start extends HttpServlet {
 				} else {
 					interestVal = Double.parseDouble(this.getServletContext().getInitParameter("interest"));
 				}
-				 totalInterestVal = interestVal
-						+ Double.parseDouble(this.getServletContext().getInitParameter("fixedInterest"));
+				 totalInterestVal = interestVal	+ Double.parseDouble(this.getServletContext().getInitParameter("fixedInterest"));
 
-				totalPrincipalVal = ((0.01 * totalInterestVal) / 12) * principalVal
-						/ (1 - Math.pow(1 + ((0.01 * totalInterestVal) / 12), (-1) * periodVal));
+				totalPrincipalVal = ((0.01 * totalInterestVal) / 12) * principalVal	/ (1 - Math.pow(1 + ((0.01 * totalInterestVal) / 12), (-1) * periodVal));
 			}
-			
-			
 			
 			
 			
@@ -182,8 +177,9 @@ public class Start extends HttpServlet {
 			request.setAttribute(PRINCIPAL,df.format(totalPrincipalVal));
 			request.setAttribute(INTEREST,df.format(graceInterestVal));
 			request.getRequestDispatcher(resultPage).forward(request,response);
+	
 	}
-		
+			
 	}
 
 	/**
